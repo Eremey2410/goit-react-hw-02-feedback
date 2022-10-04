@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { FeedbackOptions } from './Control/Control';
 import { Statistics } from './Value/Value';
-import { NotificationMessage } from './NotificationMessage/NotificationMessage';
+import { Notification } from './NotificationMessage/NotificationMessage';
 
 class Feedback extends Component {
   static defaultProps = {
@@ -12,22 +12,12 @@ class Feedback extends Component {
     neutral: this.props.initialValue,
     bad: this.props.initialValue,
   };
-  handleGood = () => {
+  leaveFeedback = key => {
     this.setState(prevState => ({
-      good: prevState.good + 1,
+      [key]: prevState[key] + 1,
     }));
   };
 
-  handleNeutral = () => {
-    this.setState(prevState => ({
-      neutral: prevState.neutral + 1,
-    }));
-  };
-  handleBad = () => {
-    this.setState(prevState => ({
-      bad: prevState.bad + 1,
-    }));
-  };
   countTotalFeedback() {
     return this.state.good + this.state.neutral + this.state.bad;
   }
@@ -39,9 +29,8 @@ class Feedback extends Component {
     return (
       <div>
         <FeedbackOptions
-          onHandleGood={this.handleGood}
-          onHandleNeutral={this.handleNeutral}
-          onHandleBad={this.handleBad}
+          options={Object.keys(this.state)}
+          onLeaveFeedback={this.leaveFeedback}
         />
         {this.countTotalFeedback() > 0 ? (
           <Statistics
@@ -52,7 +41,7 @@ class Feedback extends Component {
             valuePositivePercentage={this.countPositiveFeedbackPercentage()}
           />
         ) : (
-          <NotificationMessage />
+          <Notification message={'There is no feedback'} />
         )}
       </div>
     );

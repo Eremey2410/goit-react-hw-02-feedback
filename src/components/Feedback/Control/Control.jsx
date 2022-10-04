@@ -1,23 +1,23 @@
-import { FeedbackBtns, Buttons, FeedbackTitle } from './Control.styled';
+import { FeedbackList, Buttons, FeedbackTitle } from './Control.styled';
 
-export const FeedbackOptions = ({
-  onHandleGood,
-  onHandleNeutral,
-  onHandleBad,
-}) => (
-  <section>
-    <FeedbackTitle>Please leave feedback</FeedbackTitle>
+export const FeedbackOptions = ({ onLeaveFeedback, options }) => {
+  const handleBtnClick = evt => {
+    onLeaveFeedback(evt.target.textContent);
+  };
 
-    <FeedbackBtns>
-      <Buttons type="Buttons" onClick={onHandleGood}>
-        Good
-      </Buttons>
-      <Buttons type="Buttons" onClick={onHandleNeutral}>
-        Neutral
-      </Buttons>
-      <Buttons type="Buttons" onClick={onHandleBad}>
-        Bad
-      </Buttons>
-    </FeedbackBtns>
-  </section>
-);
+  return (
+    <section>
+      <FeedbackTitle>Please leave feedback</FeedbackTitle>
+
+      <FeedbackList>
+        {options.map(option => (
+          <li key={option}>
+            <Buttons type="Buttons" onClick={handleBtnClick}>
+              {option}
+            </Buttons>
+          </li>
+        ))}
+      </FeedbackList>
+    </section>
+  );
+};
